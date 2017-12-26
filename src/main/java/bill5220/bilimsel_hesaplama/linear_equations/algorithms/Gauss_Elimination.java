@@ -7,9 +7,7 @@ public class Gauss_Elimination {
 
         int N = B.length;
 
-        for (int k = 0; k < N; k++)
-
-        {
+        for (int k = 0; k < N; k++){
 
             /** find pivot row **/
 
@@ -42,9 +40,7 @@ public class Gauss_Elimination {
 
             /** pivot within A and B **/
 
-            for (int i = k + 1; i < N; i++)
-
-            {
+            for (int i = k + 1; i < N; i++){
 
                 double factor = A[i][k] / A[k][k];
 
@@ -68,9 +64,7 @@ public class Gauss_Elimination {
 
         double[] solution = new double[N];
 
-        for (int i = N - 1; i >= 0; i--)
-
-        {
+        for (int i = N - 1; i >= 0; i--){
 
             double sum = 0.0;
 
@@ -90,17 +84,13 @@ public class Gauss_Elimination {
      * function to print in row    echleon form
      **/
 
-    public void printRowEchelonForm(double[][] A, double[] B)
-
-    {
+    public void printRowEchelonForm(double[][] A, double[] B){
 
         int N = B.length;
 
         System.out.println("\nRow Echelon form : ");
 
-        for (int i = 0; i < N; i++)
-
-        {
+        for (int i = 0; i < N; i++){
 
             for (int j = 0; j < N; j++)
 

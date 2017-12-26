@@ -1,6 +1,7 @@
 package bill5220.bilimsel_hesaplama;
 
 import bill5220.bilimsel_hesaplama.image_editing.poission.PoissonStandalone;
+import bill5220.bilimsel_hesaplama.linear_equations.MatrixDeterminant;
 import bill5220.bilimsel_hesaplama.linear_equations.algorithms.Gauss_Elimination;
 import bill5220.bilimsel_hesaplama.linear_equations.algorithms.Gauss_Seidel;
 
@@ -112,6 +113,7 @@ public class Test extends JFrame  implements ActionListener {
         f.setSize(600,650);
         f.setLayout(null);
         f.setVisible(true);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public static void main(String[] args) {
@@ -152,7 +154,7 @@ public class Test extends JFrame  implements ActionListener {
             }
 
 
-            for (int t = 0; t< j; t++){
+            for (int t = 0; t< bValues.length; t++){
                 try {
                     b[t] = Double.valueOf(bValues[t]);
                 } catch (Exception e1) {
@@ -160,64 +162,79 @@ public class Test extends JFrame  implements ActionListener {
                 }
             }
 
-            if (e.getSource() == btnGaussSeidal) {
-                double [][] M = new double[i][j+1];
-                int t = 0;
-                for (int k = 0; k < i; k++){
-                    for (t = 0; t< j; t++){
+                MatrixDeterminant matrixDeterminant = new MatrixDeterminant();
+                Double det = matrixDeterminant.findDeterminant(A, i);
 
-                        M[k][t] = A[k][t];
+            if (det == 0 ){
+                JOptionPane.showMessageDialog( null, "<html>Girilen Matrisin Determinanti 0 !!!<br> Lutfen Degerleri Kontrol Edip Tekrar Deneyiniz...</html>");
+            }
+            else {
+                if (e.getSource() == btnGaussSeidal) {
+
+                    if (i != j) {
+                        JOptionPane.showMessageDialog( null, "<html>Girilen Matris Dikdortgen matris");
                     }
-                    M[k][t] = b[k];
+                    double[][] M = new double[i][j + 1];
+                    int t = 0;
+                    for (int k = 0; k < i; k++) {
+                        for (t = 0; t < j; t++) {
+
+                            M[k][t] = A[k][t];
+                        }
+                        M[k][t] = b[k];
+                    }
+
+                    Gauss_Seidel gausSeidel = new Gauss_Seidel(M);
+
+
+                    if (!gausSeidel.makeDominant())
+
+                    {
+
+                        System.out.println("Sistem diogonal degil!!");
+
+                    }
+
+
+                    System.out.println();
+
+
+                    double[] sol = gausSeidel.solve();
+                    int N = sol.length;
+                    String solString = "";
+                    for (t = 0; t < N; t++) {
+
+                        solString += sol[t] + "\n";
+                    }
+
+                    jtxXVector.setBackground(Color.BLUE);
+                    jtxXVector.setForeground(Color.red);
+                    jtxXVector.setFont(new Font("sansserif", Font.BOLD, 13));
+                    jtxXVector.setText(solString);
+
+
+                } else if (e.getSource() == btnGaussElimination) {
+
+                    if (i == j) {
+                        Gauss_Elimination g = new Gauss_Elimination();
+                        double[] sol = g.solve(A, b);
+                        int N = sol.length;
+                        String solString = "";
+                        for (int t = 0; t < N; t++) {
+
+                            solString += sol[t] + "\n";
+                        }
+
+                        jtxXVector.setBackground(Color.red);
+                        jtxXVector.setForeground(Color.BLUE);
+                        jtxXVector.setFont(new Font("sansserif", Font.BOLD, 13));
+                        jtxXVector.setText(solString);
+                    }else{
+                        JOptionPane.showMessageDialog( null, "<html>Girilen Matris Dikdortgen matris<br>Denklem Sayisi ile Degisken Sayisi Ayni Degil! <br>" +
+                                "Lutfen Degerleri Kontrol Edip Tekrar Deneyiniz...</html>");
+
+                    }
                 }
-
-                Gauss_Seidel gausSeidel = new Gauss_Seidel(M);
-
-
-
-                if (!gausSeidel.makeDominant())
-
-                {
-
-                    System.out.println("The system isn't diagonally dominant: " +
-
-                            "The method cannot guarantee convergence.");
-
-                }
-
-
-                System.out.println();
-
-
-                double [] sol = gausSeidel.solve();
-                int N = sol.length;
-                String solString = "";
-                for (t = 0; t < N; t++) {
-
-                    solString += sol[t] +"\n" ;
-                }
-
-                jtxXVector.setBackground(Color.BLUE);
-                jtxXVector.setForeground(Color.red);
-                jtxXVector.setFont(new Font("sansserif", Font.BOLD, 13));
-                jtxXVector.setText(solString);
-
-
-            } else if (e.getSource() == btnGaussElimination) {
-
-                Gauss_Elimination g = new Gauss_Elimination();
-                double [] sol = g. solve(A, b);
-                int N = sol.length;
-                String solString = "";
-                for (int t = 0; t < N; t++) {
-
-                    solString += sol[t] +"\n" ;
-                }
-
-                jtxXVector.setBackground(Color.red);
-                jtxXVector.setForeground(Color.BLUE);
-                jtxXVector.setFont(new Font("sansserif", Font.BOLD, 13));
-                jtxXVector.setText(solString);
             }
         }
 

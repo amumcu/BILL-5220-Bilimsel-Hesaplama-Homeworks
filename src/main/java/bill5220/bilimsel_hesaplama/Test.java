@@ -8,8 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+
 
 public class Test extends JFrame  implements ActionListener {
 
@@ -114,6 +113,12 @@ public class Test extends JFrame  implements ActionListener {
         f.setLayout(null);
         f.setVisible(true);
     }
+
+    public static void main(String[] args) {
+        new Test();
+
+    }
+
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource()==btnPoissionImageEditing){
@@ -183,9 +188,6 @@ public class Test extends JFrame  implements ActionListener {
 
                 System.out.println();
 
-                gausSeidel.print();
-
-
 
                 double [] sol = gausSeidel.solve();
                 int N = sol.length;
@@ -209,7 +211,7 @@ public class Test extends JFrame  implements ActionListener {
                 String solString = "";
                 for (int t = 0; t < N; t++) {
 
-                   solString += sol[t] +"\n" ;
+                    solString += sol[t] +"\n" ;
                 }
 
                 jtxXVector.setBackground(Color.red);
@@ -218,10 +220,6 @@ public class Test extends JFrame  implements ActionListener {
                 jtxXVector.setText(solString);
             }
         }
-
-    }
-    public static void main(String[] args) {
-        new Test();
 
     }
 

@@ -1,7 +1,5 @@
 package bill5220.bilimsel_hesaplama.linear_equations.algorithms;
 
-import java.util.Scanner;
-
 public class Gauss_Elimination {
     public double[] solve(double[][] A, double[] B)
 
@@ -24,7 +22,6 @@ public class Gauss_Elimination {
                     max = i;
 
 
-
             /** swap row in A matrix **/
 
             double[] temp = A[k];
@@ -34,7 +31,6 @@ public class Gauss_Elimination {
             A[max] = temp;
 
 
-
             /** swap corresponding values in constants matrix **/
 
             double t = B[k];
@@ -42,7 +38,6 @@ public class Gauss_Elimination {
             B[k] = B[max];
 
             B[max] = t;
-
 
 
             /** pivot within A and B **/
@@ -64,11 +59,9 @@ public class Gauss_Elimination {
         }
 
 
-
         /** Print row echelon form **/
 
         printRowEchelonForm(A, B);
-
 
 
         /** back substitution **/
@@ -89,14 +82,13 @@ public class Gauss_Elimination {
 
         }
 
-        /** Print solution **/
-
-        printSolution(solution);
         return solution;
 
     }
 
-    /** function to print in row    echleon form **/
+    /**
+     * function to print in row    echleon form
+     **/
 
     public void printRowEchelonForm(double[][] A, double[] B)
 
@@ -122,22 +114,5 @@ public class Gauss_Elimination {
 
     }
 
-    /** function to print solution **/
-
-    public void printSolution(double[] sol)
-
-    {
-
-        int N = sol.length;
-
-        System.out.println("\nSolution : ");
-
-        for (int i = 0; i < N; i++)
-
-            System.out.printf("%.3f ", sol[i]);
-
-        System.out.println();
-
-    }
 
 }

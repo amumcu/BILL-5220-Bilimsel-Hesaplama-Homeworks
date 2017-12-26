@@ -1,41 +1,17 @@
 package bill5220.bilimsel_hesaplama.linear_equations.algorithms;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Gauss_Seidel {
-    public static final int MAX_ITERATIONS = 100;
+
+    public static final int MAX_ITERATIONS = 300;
 
     private double[][] M;
 
-    public Gauss_Seidel(double [][] matrix) { M = matrix; }
-
-
-
-    public void print()
-
-    {
-
-        int n = M.length;
-
-        for (int i = 0; i < n; i++)
-
-        {
-
-            for (int j = 0; j < n + 1; j++)
-
-                System.out.print(M[i][j] + " ");
-
-            System.out.println();
-
-        }
-
+    public Gauss_Seidel(double[][] matrix) {
+        M = matrix;
     }
-
 
 
     public boolean transformToDominant(int r, boolean[] V, int[] R)
@@ -48,7 +24,7 @@ public class Gauss_Seidel {
 
         {
 
-            double[][] T = new double[n][n+1];
+            double[][] T = new double[n][n + 1];
 
             for (int i = 0; i < R.length; i++)
 
@@ -61,15 +37,12 @@ public class Gauss_Seidel {
             }
 
 
-
             M = T;
-
 
 
             return true;
 
         }
-
 
 
         for (int i = 0; i < n; i++)
@@ -79,15 +52,12 @@ public class Gauss_Seidel {
             if (V[i]) continue;
 
 
-
             double sum = 0;
-
 
 
             for (int j = 0; j < n; j++)
 
                 sum += Math.abs(M[i][j]);
-
 
 
             if (2 * Math.abs(M[i][r]) > sum)
@@ -99,11 +69,9 @@ public class Gauss_Seidel {
                 R[r] = i;
 
 
-
                 if (transformToDominant(r + 1, V, R))
 
                     return true;
-
 
 
                 V[i] = false;
@@ -113,11 +81,9 @@ public class Gauss_Seidel {
         }
 
 
-
         return false;
 
     }
-
 
 
     public boolean makeDominant()
@@ -129,15 +95,12 @@ public class Gauss_Seidel {
         int[] rows = new int[M.length];
 
 
-
         Arrays.fill(visited, false);
-
 
 
         return transformToDominant(0, visited, rows);
 
     }
-
 
 
     public double[] solve()
@@ -157,7 +120,6 @@ public class Gauss_Seidel {
         Arrays.fill(X, 0);
 
 
-
         while (true)
 
         {
@@ -169,7 +131,6 @@ public class Gauss_Seidel {
                 double sum = M[i][n]; // b_n
 
 
-
                 for (int j = 0; j < n; j++)
 
                     if (j != i)
@@ -177,13 +138,11 @@ public class Gauss_Seidel {
                         sum -= M[i][j] * X[j];
 
 
-
                 // Update x_i to use in the next row calculation
 
-                X[i] = 1/M[i][i] * sum;
+                X[i] = 1 / M[i][i] * sum;
 
             }
-
 
 
             System.out.print("X_" + iterations + " = {");
@@ -195,13 +154,11 @@ public class Gauss_Seidel {
             System.out.println("}");
 
 
-
             iterations++;
 
             if (iterations == 1)
 
                 continue;
-
 
 
             boolean stop = true;
@@ -213,87 +170,15 @@ public class Gauss_Seidel {
                     stop = false;
 
 
-
             if (stop || iterations == MAX_ITERATIONS) {
                 return X;
             }
 
-            P = (double[])X.clone();
+            P = (double[]) X.clone();
 
         }
 
     }
 
-
-
-    public static void main(String[] args) throws IOException
-
-    {
-
-        int n;
-
-        double[][] M;
-
-
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        PrintWriter writer = new PrintWriter(System.out, true);
-
-
-
-        System.out.println("Enter the number of variables in the equation:");
-
-        n = Integer.parseInt(reader.readLine());
-
-        M = new double[n][n+1];
-
-        System.out.println("Enter the augmented matrix:");
-
-
-
-        for (int i = 0; i < n; i++)
-
-        {
-
-            StringTokenizer strtk = new StringTokenizer(reader.readLine());
-
-
-
-            while (strtk.hasMoreTokens())
-
-                for (int j = 0; j < n + 1 && strtk.hasMoreTokens(); j++)
-
-                    M[i][j] = Integer.parseInt(strtk.nextToken());
-
-        }
-
-
-
-
-
-        Gauss_Seidel gausSeidel = new Gauss_Seidel(M);
-
-
-
-        if (!gausSeidel.makeDominant())
-
-        {
-
-            writer.println("The system isn't diagonally dominant: " +
-
-                    "The method cannot guarantee convergence.");
-
-        }
-
-
-
-        writer.println();
-
-        gausSeidel.print();
-
-        gausSeidel.solve();
-
-    }
 
 }

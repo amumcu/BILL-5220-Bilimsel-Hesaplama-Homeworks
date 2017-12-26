@@ -1,14 +1,14 @@
 package bill5220.bilimsel_hesaplama.image_editing.poission;
 
-public class Coord {
+public class Coordinate {
 	public int x, y;
 
-	public Coord() {
+	public Coordinate() {
 		x = 0;
 		y = 0;
 	}
 
-    public Coord(int x, int y) {
+    public Coordinate(int x, int y) {
     	this.x = x;
     	this.y = y;
     }

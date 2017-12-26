@@ -1,6 +1,5 @@
-package bill5220.bilimsel_hesaplama.image_editing.poission;//A GUI for selecting, resizing, rotating, and flipping images that are
-//used in the Poisson Image Editing application
-//(c) Chris Tralie, 2012
+package bill5220.bilimsel_hesaplama.image_editing.poission;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -10,7 +9,7 @@ import java.awt.image.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
-public class ImageSelector extends JFrame implements ActionListener, DocumentListener {
+public class SelectImage extends JFrame implements ActionListener, DocumentListener {
 	public JButton selectFileButton;
 	public JButton selectImageButton;
 
@@ -22,7 +21,7 @@ public class ImageSelector extends JFrame implements ActionListener, DocumentLis
 	
 	public static String lastFilename = "";
 
-    public ImageSelector() {
+    public SelectImage() {
     	Container content = getContentPane();
     	content.setLayout(new BorderLayout());
     	

@@ -3,10 +3,10 @@ package bill5220.bilimsel_hesaplama.image_editing.poission;//A sparse matrix sol
 import java.util.ArrayList;
 import java.awt.image.*;
 
-public class MatrixSolver {
+public class SolveMatriz {
 	//Variables passed along from the visual interface
 	//used to display the image as it's iteratively updated
-	public ArrayList<Coord> selectionArea;
+	public ArrayList<Coordinate> selectionArea;
 	public int xMin, yMin;
 
 	//Matrix variables
@@ -17,9 +17,9 @@ public class MatrixSolver {
 	double[][] X;//Guess
 	double[][] b;//Target of Ax = b
 
-    public MatrixSolver(int[][] mask, ArrayList<Coord> selectionArea, 
-    					BufferedImage image, BufferedImage selectedImage,
-    					int xMin, int yMin, int Width, int Height, boolean flatten) {
+    public SolveMatriz(int[][] mask, ArrayList<Coordinate> selectionArea,
+					   BufferedImage image, BufferedImage selectedImage,
+					   int xMin, int yMin, int Width, int Height, boolean flatten) {
 		this.selectionArea = selectionArea;
     	this.xMin = xMin;
     	this.yMin = yMin;    	

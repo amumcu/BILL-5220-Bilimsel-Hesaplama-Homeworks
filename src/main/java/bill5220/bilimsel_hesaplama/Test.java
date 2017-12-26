@@ -1,6 +1,6 @@
 package bill5220.bilimsel_hesaplama;
 
-import bill5220.bilimsel_hesaplama.image_editing.poission.PoissonStandalone;
+import bill5220.bilimsel_hesaplama.image_editing.poission.PoissonImageEditing;
 import bill5220.bilimsel_hesaplama.linear_equations.MatrixDeterminant;
 import bill5220.bilimsel_hesaplama.linear_equations.algorithms.Gauss_Elimination;
 import bill5220.bilimsel_hesaplama.linear_equations.algorithms.Gauss_Seidel;
@@ -124,7 +124,7 @@ public class Test extends JFrame  implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource()==btnPoissionImageEditing){
-            PoissonStandalone.start();
+            PoissonImageEditing.start();
         }else {
             String aMatrix = jtxAMatrix.getText();
             String bVector = jxtBVector.getText();

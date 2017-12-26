@@ -1,16 +1,11 @@
 package bill5220.bilimsel_hesaplama.image_editing.poission;//A Canny Edge Image extractor used for texture flattening in the Poisson
-//Image Editor
-//(c) Chris Tralie 2012
-import java.util.ArrayList;
+
 import java.awt.image.*;
 
 public class CannyEdgeImage {
 	public static final double CANNYSIGMA = 2;
 
-    //This method does 2D convolution in the spatial domain (no FFT)
-    //XKernel is a kernel of width "XWidth," meaning there's XWidth samples to the left
-    //and to the right of the origin
-    //YKernel is a kernel of width "YWidth"
+
     public static double[][] spatialConv2(double[] XKernel, int XWidth, double[] YKernel, int YWidth, double[][] im) {
     	int W = im.length, H = im[0].length;
         double[][] im1 = new double[W][H];
@@ -21,8 +16,7 @@ public class CannyEdgeImage {
                 im1[x][y] = 0.0;
                 for (int k = 0; k < XWidth*2+1; k++) {
                     int dx = x + k - XWidth;
-                    //If out of bounds, hold the color on the boundary constant
-                    //This will ensure that edges don't get triggered improperly
+
                     if (dx < 0)    dx = 0;
                     if (dx >= W) dx = W-1;
                     im1[x][y] += im[dx][y]*XKernel[XWidth*2-k];
@@ -51,7 +45,6 @@ public class CannyEdgeImage {
         return true;
     }
 
-    //Helper function for getHysteresis
     public static void Connect(double[][] SuppressedImage, double[][] EdgeOrient, boolean[][] ret,
                  boolean[][] visited, int x, int y, int depth, double T_l) {
         int[] NDir = {1, 0, -1, 0,    1, 1, -1, -1,    0, 1, 0, -1,    -1, 1, 1, -1};

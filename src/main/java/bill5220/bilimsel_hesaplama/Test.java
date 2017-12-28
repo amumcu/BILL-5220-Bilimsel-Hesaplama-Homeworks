@@ -172,7 +172,7 @@ public class Test extends JFrame  implements ActionListener {
                 if (e.getSource() == btnGaussSeidal) {
 
                     if (i != j) {
-                        JOptionPane.showMessageDialog( null, "<html>Girilen Matris Dikdortgen matris");
+                        JOptionPane.showMessageDialog( null, "Girilen Matris Dikdortgen matris");
                     }
                     double[][] M = new double[i][j + 1];
                     int t = 0;
@@ -187,11 +187,12 @@ public class Test extends JFrame  implements ActionListener {
                     Gauss_Seidel gausSeidel = new Gauss_Seidel(M);
 
 
-                    if (!gausSeidel.makeDominant())
+
+                    if (!gausSeidel.diagonal())
 
                     {
 
-                        System.out.println("Sistem diogonal degil!!");
+                        JOptionPane.showMessageDialog( null, "Sistem diogonal degil!!!");
 
                     }
 

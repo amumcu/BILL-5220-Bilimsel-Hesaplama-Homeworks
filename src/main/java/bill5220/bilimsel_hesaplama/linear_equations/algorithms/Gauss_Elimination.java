@@ -1,15 +1,13 @@
 package bill5220.bilimsel_hesaplama.linear_equations.algorithms;
 
 public class Gauss_Elimination {
-    public double[] solve(double[][] A, double[] B)
-
-    {
+    public double[] solve(double[][] A, double[] B) {
 
         int N = B.length;
 
         for (int k = 0; k < N; k++){
 
-            /** find pivot row **/
+            /** find pivot row */
 
             int max = k;
 
@@ -20,7 +18,6 @@ public class Gauss_Elimination {
                     max = i;
 
 
-            /** swap row in A matrix **/
 
             double[] temp = A[k];
 
@@ -29,7 +26,6 @@ public class Gauss_Elimination {
             A[max] = temp;
 
 
-            /** swap corresponding values in constants matrix **/
 
             double t = B[k];
 
@@ -38,7 +34,6 @@ public class Gauss_Elimination {
             B[max] = t;
 
 
-            /** pivot within A and B **/
 
             for (int i = k + 1; i < N; i++){
 
@@ -55,7 +50,6 @@ public class Gauss_Elimination {
         }
 
 
-        /** Print row echelon form **/
 
         printRowEchelonForm(A, B);
 
@@ -81,7 +75,7 @@ public class Gauss_Elimination {
     }
 
     /**
-     * function to print in row    echleon form
+     *  row    echleon form
      **/
 
     public void printRowEchelonForm(double[][] A, double[] B){

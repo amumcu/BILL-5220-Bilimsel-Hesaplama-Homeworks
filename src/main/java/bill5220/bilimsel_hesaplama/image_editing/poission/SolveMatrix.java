@@ -3,7 +3,7 @@ package bill5220.bilimsel_hesaplama.image_editing.poission;//A sparse matrix sol
 import java.util.ArrayList;
 import java.awt.image.*;
 
-public class SolveMatriz {
+public class SolveMatrix {
 	//Variables passed along from the visual interface
 	//used to display the image as it's iteratively updated
 	public ArrayList<Coordinate> selectionArea;
@@ -13,11 +13,10 @@ public class SolveMatriz {
 	int N;
 	int[] D;//Diagonal
 	int[][] R;//Off-Diagonal
-	//NOTE: This R actually stores the negative of the real R matrix
 	double[][] X;//Guess
 	double[][] b;//Target of Ax = b
 
-    public SolveMatriz(int[][] mask, ArrayList<Coordinate> selectionArea,
+    public SolveMatrix(int[][] mask, ArrayList<Coordinate> selectionArea,
 					   BufferedImage image, BufferedImage selectedImage,
 					   int xMin, int yMin, int Width, int Height, boolean flatten) {
 		this.selectionArea = selectionArea;
@@ -95,7 +94,7 @@ public class SolveMatriz {
     }
     
     //Use the Jacobi Method
-    public void nextIteration() {
+    public void nextIterationJacobi() {
     	double[][] nextX = new double[N][3];
     	for (int i = 0; i < N; i++) {
     		for (int k = 0; k < 3; k++)
@@ -113,6 +112,31 @@ public class SolveMatriz {
     	for (int i = 0; i < N; i++)
     		X[i] = nextX[i];
     }
+
+	double[][] prevX;
+	//Use the Successive Over-Relaxation Method
+	public void nextIterationGauss_Seidel() {
+		double omega = 1.95;
+		if (prevX == null || prevX.length != N) {
+			prevX = new double[N][3];
+		}
+		for (int i = 0; i < N; i++) {
+			for (int k = 0; k < 3; k++) {
+				prevX[i][k] = X[i][k];
+				X[i][k] = b[i][k];
+			}
+			for (int n = 0; n < 4; n++) {
+				if (R[i][n] >= 0) {
+					int index = R[i][n];
+					for (int k = 0; k < 3; k++)
+						X[i][k] += X[index][k];
+				}
+			}
+			for (int k = 0; k < 3; k++) {
+				X[i][k] = prevX[i][k] + omega * (X[i][k]/D[i] - prevX[i][k]);
+			}
+		}
+	}
     
     public double getError() {
     	double total = 0.0;

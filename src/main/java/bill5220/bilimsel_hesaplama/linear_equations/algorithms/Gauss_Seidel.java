@@ -14,95 +14,6 @@ public class Gauss_Seidel {
     }
 
 
-    public boolean transformToDominant(int r, boolean[] V, int[] R)
-
-    {
-
-        int n = M.length;
-
-        if (r == M.length)
-
-        {
-
-            double[][] T = new double[n][n + 1];
-
-            for (int i = 0; i < R.length; i++)
-
-            {
-
-                for (int j = 0; j < n + 1; j++)
-
-                    T[i][j] = M[R[i]][j];
-
-            }
-
-
-            M = T;
-
-
-            return true;
-
-        }
-
-
-        for (int i = 0; i < n; i++)
-
-        {
-
-            if (V[i]) continue;
-
-
-            double sum = 0;
-
-
-            for (int j = 0; j < n; j++)
-
-                sum += Math.abs(M[i][j]);
-
-
-            if (2 * Math.abs(M[i][r]) > sum)
-
-            { // diagonally dominant?
-
-                V[i] = true;
-
-                R[r] = i;
-
-
-                if (transformToDominant(r + 1, V, R))
-
-                    return true;
-
-
-                V[i] = false;
-
-            }
-
-        }
-
-
-        return false;
-
-    }
-
-
-    public boolean makeDominant()
-
-    {
-
-        boolean[] visited = new boolean[M.length];
-
-        int[] rows = new int[M.length];
-
-
-        Arrays.fill(visited, false);
-
-
-        return transformToDominant(0, visited, rows);
-
-    }
-
-
     public double[] solve()
 
     {
@@ -120,13 +31,9 @@ public class Gauss_Seidel {
         Arrays.fill(X, 0);
 
 
-        while (true)
+        while (true){
 
-        {
-
-            for (int i = 0; i < n; i++)
-
-            {
+            for (int i = 0; i < n; i++){
 
                 double sum = M[i][n]; // b_n
 
@@ -179,6 +86,25 @@ public class Gauss_Seidel {
         }
 
     }
+
+    public   boolean diagonal(){
+        final int N = M.length;
+        double sum;
+        for(int i=0;i<N;i++){
+            sum = 0;
+            for(int j=0;j<N;j++){
+                if(i!=j){
+                    sum +=Math.abs(M[i][j]);
+                }
+            }
+            if(Math.abs(M[i][i])<=sum){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 
 }

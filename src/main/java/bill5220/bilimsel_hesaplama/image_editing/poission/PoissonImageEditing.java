@@ -22,7 +22,8 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 	
 	//Menu Options
 	public static final String SELECT_REGION = "Select Region";
-	public static final String BLEND_SELECTION = "Blend Selection";
+	public static final String BLEND_SELECTION = "Blend Selection ( Jacobi )";
+	public static final String BLEND_SELECTION_SOR = "Blend Selection ( SOR )";
 	public static final String FLATTEN_SELECTION = "Flatten Selection";
 	public static final String SELECT_IMAGE1 = "Select Left Image";
 	public static final String SELECT_IMAGE2 = "Select Right Image";
@@ -52,7 +53,7 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 	public boolean doneAnything = false;
 	
 	//Matrix solver
-	public SolveMatriz solver;
+	public SolveMatrix solver;
 	public Thread blendingThread;
 	public JProgressBar progressBar;
 	
@@ -114,9 +115,9 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 		fileMenu.add(SELECT_IMAGE2).addActionListener(this);
 		fileMenu.add(SELECT_REGION).addActionListener(this);
 		fileMenu.add(BLEND_SELECTION).addActionListener(this);
-		fileMenu.add(FLATTEN_SELECTION).addActionListener(this);
+		fileMenu.add(BLEND_SELECTION_SOR).addActionListener(this);
 		fileMenu.add(SAVE_IMAGE).addActionListener(this);
-		//fileMenu.add(STOP).addActionListener(this);
+		fileMenu.add(STOP).addActionListener(this);
 		menu.add(fileMenu);
 		
 		menu.setBounds(0, 0, Width, 20);
@@ -199,19 +200,20 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 			selectionArea.clear();
 			state = SELECTING;
 		}
-		else if (str.equals(BLEND_SELECTION)) {
+		else if (str.equals(BLEND_SELECTION) || str.equals(BLEND_SELECTION_SOR)) {
 			state = BLENDING;
 			updateMask();
-			solver = new SolveMatriz(mask, selectionArea, image, selectedImage,
+			solver = new SolveMatrix(mask, selectionArea, image, selectedImage,
 									  xMin, yMin, Width, Height, false);
-			IterationBlender blender = new IterationBlender();
+			IterationBlender blender = new IterationBlender(str);
 			blendingThread = new Thread(blender);
 			blendingThread.start();
 		}
+
 		else if (str.equals(FLATTEN_SELECTION)) {
 			state = BLENDING;
 			updateMask();
-			solver = new SolveMatriz(mask, selectionArea, image, selectedImage,
+			solver = new SolveMatrix(mask, selectionArea, image, selectedImage,
 									  xMin, yMin, Width, Height, true);
 			IterationBlender blender = new IterationBlender();
 			blendingThread = new Thread(blender);
@@ -399,13 +401,20 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 		canvas.repaint();
 	}
 	
-	public void nextIteration() {
+	public void nextIterationGe() {
 		for (int i = 0; i < 100; i++)
-			solver.nextIteration();
+			solver.nextIterationGauss_Seidel();
 		synchronized(selectedImage) {
 			solver.updateImage(selectedImage);
 		}
 		canvas.repaint();	
+	}	public void nextIterationJ() {
+		for (int i = 0; i < 100; i++)
+			solver.nextIterationJacobi();
+		synchronized(selectedImage) {
+			solver.updateImage(selectedImage);
+		}
+		canvas.repaint();
 	}
 	
 	public void finalizeBlending() {
@@ -418,6 +427,16 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 	}
 	
 	class IterationBlender implements Runnable {
+
+		String alg;
+		IterationBlender () {
+
+		}
+
+		IterationBlender (String alg) {
+			this.alg = alg;
+		}
+
 		public void run() {
 			int iteration = 0;
 			double error;
@@ -434,7 +453,11 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 					progressBar.repaint();
 				}
 				iteration++;
-				nextIteration();
+				if (alg.equals(BLEND_SELECTION_SOR))
+				nextIterationGe();
+
+				if (alg.equals(BLEND_SELECTION))
+				nextIterationJ();
 			}
 			while (error > 1.0 && state == BLENDING);
 			finalizeBlending();

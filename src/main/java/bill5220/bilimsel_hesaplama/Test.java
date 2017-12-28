@@ -108,8 +108,8 @@ public class Test extends JFrame  implements ActionListener {
         f.add(labelExp);
 
 
-        jtxAMatrix.setText("1 2\n6 5");
-        jxtBVector.setText("3\n4");
+        jtxAMatrix.setText("8 2 3\n1 -9 2\n2 3 7 ");
+        jxtBVector.setText("30\n1\n35");
         f.setSize(600,650);
         f.setLayout(null);
         f.setVisible(true);

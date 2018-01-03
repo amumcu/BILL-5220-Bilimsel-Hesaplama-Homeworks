@@ -115,7 +115,7 @@ public class SolveMatrix {
 
 	double[][] prevX;
 	//Use the Successive Over-Relaxation Method
-	public void nextIterationGauss_Seidel() {
+	public void nextIterationSOR() {
 		double omega = 1.95;
 		if (prevX == null || prevX.length != N) {
 			prevX = new double[N][3];

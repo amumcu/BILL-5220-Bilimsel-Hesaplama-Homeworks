@@ -403,7 +403,7 @@ public class PoissonImageEditing extends JFrame implements ActionListener, Windo
 	
 	public void nextIterationGe() {
 		for (int i = 0; i < 100; i++)
-			solver.nextIterationGauss_Seidel();
+			solver.nextIterationSOR();
 		synchronized(selectedImage) {
 			solver.updateImage(selectedImage);
 		}
